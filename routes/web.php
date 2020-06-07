@@ -27,7 +27,7 @@ Route::group(['middleware' => 'auth'],function(){
 
      Route::post('/reservation_submit/{id}',"StudentController@reservation_submit")->name('reservation_submit');
      Route::post('/reservation_cancel/{id}',"StudentController@reservation_cancel")->name('reservation_cancel');
-     
+
      Route::get('/student/books',"StudentController@student_books")->name('student_books');
 
 
