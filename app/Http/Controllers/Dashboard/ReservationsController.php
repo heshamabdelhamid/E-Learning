@@ -27,7 +27,7 @@ class ReservationsController extends Controller
     {
 
 
-    
+
         return $dataTable->render('dashboard.reservations.index');
 
     }
@@ -40,7 +40,7 @@ class ReservationsController extends Controller
     {
 
 
-         
+
         return  view('dashboard.reservations.edit',compact('reservation'));
 
     }
@@ -52,7 +52,7 @@ class ReservationsController extends Controller
     {
 
        $validate = $request->validate([
-            
+
             "status" => "required|in:pending,active,refused,retrieved"
 
        ]);
@@ -60,12 +60,12 @@ class ReservationsController extends Controller
 
        if($validate['status'] == 'refused'){
 
-          \App\Book::where('id',$reservation->book_id)->update(['available' => 'yes']);
+          \App\Book::where('id',$reservation->book_id)->update(['available' => 1]);
        }
 
       if($validate['status'] == 'retrieved'){
 
-          \App\Book::where('id',$reservation->book_id)->update(['available' => 'yes']);
+          \App\Book::where('id',$reservation->book_id)->update(['available' => 1]);
        }
 
 

@@ -12,26 +12,21 @@ Config(['auth.defaults.guard' => 'web']);
 
 class StudentController extends Controller
 {
-    
-   
+
+
  /*---------------------------------------------------------------------*/
 
      public function book_reservation($id){
-           
+
         $book = Book::with('reservation')->findOrFail($id);
 
-
-
-
-        if($book->available == 'yes'){
-
+        if($book->available && auth()->user()->can_reservation ){
 
             return view('student.book_reservation',compact(['book']));
 
         }else{
 
-
-            return back();
+            return redirect(route('welcome'));
         }
 
      }
@@ -45,23 +40,23 @@ class StudentController extends Controller
 
           if(!empty($book)){
 
-               if($book->available == 'yes'){
+               if($book->available  && auth()->user()->can_reservation){
 
                $reservation = Reservation::create(['student_id' => auth()->user()->id,'book_id' => $id]);
-          
-               $book->update(['available' => 'no']);
+
+               $book->update(['available' => 0]);
 
 
-              return response(["status" => 200]);        
+              return response(["status" => 200]);
 
                }else{
 
-               return response(["status" => 304,'content' => 'not available']);        
+               return response(["status" => 304,'content' => 'not available']);
               }
 
             }else{
 
-              return response(["status" => 304,'content' => 'not available']);         
+              return response(["status" => 304,'content' => 'not available']);
 
             }
 
@@ -80,38 +75,38 @@ class StudentController extends Controller
       $reservation = Reservation::where('student_id' ,auth()->user()->id)->where('status' ,'!=','refused')->get();
 
 
-       
+
          return view('student.student_books',compact(['reservation']));
-    }    
+    }
 
 //=============================================================================
 
 
     public function reservation_cancel( $id){
-  
+
 
 
           $reservation = Reservation::find($id);
-       
+
           if(!empty($reservation )){
 
 
-           \App\Book::where('id',$reservation->book_id)->update(['available' => 'yes']);
+           \App\Book::where('id',$reservation->book_id)->update(['available' => 1]);
 
              $reservation->delete();
 
               session()->flash('success','تم الغاء الحجز');
 
-              return redirect(route('student_books'));        
+              return redirect(route('student_books'));
 
           }else{
 
-             return back();
-       
+             return redirect(route('welcome'));
+
 
           }
 
-    
+
 
 
 
@@ -121,11 +116,11 @@ class StudentController extends Controller
 
 
   public function addLike($book_id){
-       
+
        if(request()->ajax()){
-              
+
              $book = Book::find($book_id);
-             
+
              if(!empty($book)){
 
               \App\BookLikes::create(['book_id' => $book_id,'student_id' => auth()->user()->id]);
@@ -134,9 +129,9 @@ class StudentController extends Controller
 
              }else{
               return response(['status' => 'error'],304);
-             } 
+             }
 
-        
+
            return response(['status' => 'error'],304);
 
 
@@ -154,11 +149,11 @@ class StudentController extends Controller
 
 
   public function disLike($book_id){
-       
+
        if(request()->ajax()){
-              
+
         $bookLikes = BookLikes::where('book_id',$book_id)->where('student_id', auth()->user()->id)->first();
-             
+
              if(!empty($bookLikes)){
 
                $bookLikes->delete();
@@ -169,9 +164,9 @@ class StudentController extends Controller
 
              }else{
               return response(['status' => 'error'],304);
-             } 
+             }
 
-        
+
            return response(['status' => 'error'],304);
 
 
@@ -186,7 +181,7 @@ class StudentController extends Controller
 
        }
 
-  
+
 
 
 //=============================================================================

@@ -22,12 +22,12 @@
 
           },
           success:function(data){
-             
+
                  $(".showSuccess").removeClass('d-none');
 
              setTimeout(function(){
                     window.location.href = "{{route('student_books')}}";
-                    
+
               }, 4000);
 
           },
@@ -42,7 +42,7 @@
          });
 
        });
-        
+
 
 	});
 </script>
@@ -56,7 +56,7 @@
 
 
 <div class="alert alert-success alert-dismissible fade show d-none showSuccess text-center" role="alert">
-  <strong>تم الحجز</strong> برجاء التوجه للمخروبه لاستلام الكتاب 
+  <strong>تم الحجز</strong> برجاء التوجه للمخروبه لاستلام الكتاب
    <br>
    <span>
       سوف يتم تحويلك لصفحة الكتب الخاصه بك
@@ -74,11 +74,11 @@
                     <div class="col-sm-5">
                         <div class="book-body">
                             <div class="book-img">
-                                <img src="{{asset('storage/'.$book->photo)}}" alt="books" />
+                                <img src="{{asset('books/'.$book->photo)}}" alt="books" />
                             </div>
                             <div class="book-info">
-                                <span class="category">قسم تاريخ</span>
-                                <h3 class="book-name">كتاب حلو بس مجهد</h3>
+                                <span class="category">                                    {{$book->category->name == 'undefined‏' ? 'عام' : $book->category->name }}</span>
+                                <h3 class="book-name">{{$book->title}}</h3>
                             </div>
                             <div class="book-details">
                                 <div class="stars">
@@ -89,9 +89,9 @@
                                     <i class="staricon-"></i>
                                 </div>
                                 <div class="booking">
-                                    
+
                                       {{$book->bookLikes()->count()}} اعجاب
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -108,8 +108,8 @@
                     </div>
 
 
-    
-  
+
+
 
                 </div>
             </div>
@@ -124,6 +124,5 @@
 </div>
 @endsection
 
-      
 
-     
+

@@ -11,7 +11,7 @@ use App\DataTables\StaffDataTable;
 class StaffController extends Controller
 {
 
-  
+
   public function __construct(){
 
       $this->middleware('permission:create_staff')->only(['create','store']);
@@ -26,7 +26,7 @@ class StaffController extends Controller
 
     public function index(StaffDataTable $dataTable)
     {
-        
+
 
 
        return $dataTable->render('dashboard.staff.index');
@@ -38,7 +38,7 @@ class StaffController extends Controller
 
     public function create()
     {
-       
+
         return view('dashboard.staff.create');
     }
 
@@ -47,21 +47,15 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
-
-
-
-      
          $validate = $request->validate([
-   
+
               "name" => 'required|min:3|string',
               "email" => 'required|min:3|string|unique:admins',
               "phone" => 'required|min:6|string',
               "password" => 'required|confirmed|min:6|string',
-
-            
          ]);
 
-            
+
         $validate['password'] = bcrypt($request->password);
         $validate['level'] = 'staff';
 
@@ -86,7 +80,7 @@ class StaffController extends Controller
 // -------------------------------------------------------------------------------
 
 
-   
+
 // -------------------------------------------------------------------------------
 
 
@@ -94,7 +88,7 @@ class StaffController extends Controller
     {
 
        $admin = Admin::findOrFail($id);
-         
+
         return  view('dashboard.staff.edit',compact('admin'));
 
     }
@@ -109,16 +103,16 @@ class StaffController extends Controller
 
 
          $validate = $request->validate([
-   
+
               "name" => 'required|min:3|string',
               "email" => 'required|min:3|string|unique:admins,email,'.$admin->id.'id',
               "phone" => 'required|min:6|string',
 
-            
+
          ]);
 
          if(request()->has('password') && request()->password != ''){
-            
+
             request()->validate(["password" => 'sometimes|nullable|confirmed|min:6|string']);
 
             $validate['password'] = bcrypt($request->password);

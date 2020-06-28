@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول</title>
     <style>
-    @font-face {
-        font-family: 'Source Sans Pro';
-        font-style: normal;
-        font-weight: 200;
-        src: local('Source Sans Pro ExtraLight'), local('SourceSansPro-ExtraLight'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3i94_wlxdr.ttf) format('truetype');
-    }
-    @font-face {
-        font-family: 'Source Sans Pro';
-        font-style: normal;
-        font-weight: 300;
-        src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(https://fonts.gstatic.com/s/sourcesanspro/v13/6xKydSBYKcSV-LCoeQqfX1RYOo3ik4zwlxdr.ttf) format('truetype');
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1998;
     }
     * {
         box-sizing: border-box;
@@ -24,46 +20,43 @@
         font-weight: 300;
     }
     body {
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: 'Tajawal', sans-serif;
         color: white;
         font-weight: 300;
     }
     body ::-webkit-input-placeholder {
         /* WebKit browsers */
-        font-family: 'Source Sans Pro', sans-serif;
         color: white;
         font-weight: 300;
+        font-family: 'Tajawal', sans-serif;
     }
     body :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
-        font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Tajawal', sans-serif;
         color: white;
         opacity: 1;
         font-weight: 300;
     }
     body ::-moz-placeholder {
         /* Mozilla Firefox 19+ */
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: 'Tajawal', sans-serif;
         color: white;
         opacity: 1;
         font-weight: 300;
     }
     body :-ms-input-placeholder {
         /* Internet Explorer 10+ */
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: 'Tajawal', sans-serif;
         color: white;
         font-weight: 300;
     }
     .wrapper {
-        background: #50a3a2;
-        background: -webkit-gradient(linear, left top, right bottom, from(#50a3a2), to(#53e3a6));
-        background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+        background: #536DFE;
+        background: -webkit-gradient(linear, left top, right bottom, from(#536DFE), to(#4B62E5));
+        background: linear-gradient(to bottom right, #536DFE 0%, #4B62E5 100%);
         position: absolute;
-        top: 50%;
-        left: 0;
         width: 100%;
-        height: 400px;
-        margin-top: -200px;
+        min-height: 100vh;
         overflow: hidden;
     }
     .wrapper.form-success .container h1 {
@@ -78,6 +71,8 @@
         text-align: center;
     }
     .container h1 {
+        font-family: 'Tajawal', sans-serif;
+        font-weight: 700 !important;
         font-size: 40px;
         -webkit-transition-duration: 1s;
                 transition-duration: 1s;
@@ -91,6 +86,7 @@
         z-index: 2;
     }
     form input {
+        font-family: 'Tajawal', sans-serif;
         -webkit-appearance: none;
             -moz-appearance: none;
                 appearance: none;
@@ -115,9 +111,11 @@
     form input:focus {
         background-color: white;
         width: 300px;
-        color: #53e3a6;
+        color: #536DFE;
     }
     form button {
+        font-family: 'Tajawal', sans-serif;
+        font-weight: 700;
         -webkit-appearance: none;
             -moz-appearance: none;
                 appearance: none;
@@ -125,7 +123,7 @@
         background-color: white;
         border: 0;
         padding: 10px 15px;
-        color: #53e3a6;
+        color: #4b62e5;
         border-radius: 3px;
         width: 250px;
         cursor: pointer;
@@ -252,16 +250,25 @@
 <body>
     <div class="wrapper">
         <div class="container">
-            <h1>Welcome</h1>
-            
-            <form class="form" action="{{route('welcome.loginSubmit')}}" method="post">
-                @csrf()
-                <input name="student_id" type="text" placeholder="username" required>
-                <input name="password" type="password" placeholder="Password" required>
-                <button type="submit" id="login-button">Login</button>
-            </form>
+            <div class="center">
+                <h1>مرحبا</h1>
+                <?php
+                if(session('failed')){
+
+                    echo  "<div class='display-error'><p style='font-size:20px;color:red'>" . session("failed") ."</p></div>";
+                }
+
+                ?>
+
+                <form class="form" action="{{route('welcome.loginSubmit')}}" method="post">
+                    @csrf()
+                    <input name="student_id" type="text" placeholder="اسم المستخدم" required>
+                    <input name="password" type="password" placeholder="كلمة السر" required>
+                    <button type="submit" id="login-button">تسجيل دخول</button>
+                </form>
+            </div>
         </div>
-        
+
         <ul class="bg-bubbles">
             <li></li>
             <li></li>

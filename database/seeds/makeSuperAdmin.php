@@ -40,7 +40,7 @@ class makeSuperAdmin extends Seeder
                 "create_book",
                 "read_book",
                 "update_book",
-                "delete_book",     
+                "delete_book",
                 "read_reservation",
                 "update_reservation",
                 "delete_reservation",
@@ -82,7 +82,7 @@ $permission_admin = [
       foreach($permission as $permissions){
 
           Permission::create(['name' => $permissions]);
-      }  
+      }
 
        $role_s_admin->givePermissionTo($permission);
 
@@ -92,18 +92,18 @@ $permission_admin = [
 
     //-----------------------------------------------------------
 
-    \App\Student::create([
+    // \App\Student::create([
 
-            'full_name' => 'ahmed mohamed',
-            'student_id' => '01015',
-            "level" => 4,
-            'password' => bcrypt(123456)
-          ]); 
+    //         'full_name' => 'ahmed mohamed',
+    //         'student_id' => '01015',
+    //         "level" => 4,
+    //         'password' => bcrypt(123456)
+    //       ]);
 
 
 //--------------------------------------------------
 
-   \App\Category::create(['name' => 'undefined‏']); 
+//    \App\Category::create(['name' => 'undefined‏']);
 
 
 

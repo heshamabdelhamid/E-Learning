@@ -63,6 +63,8 @@ class AdminsController extends Controller
         $validate['password'] = bcrypt($request->password);
         $validate['level'] = 'admin';
 
+      //  return $request;
+
 
         $admin = Admin::create($validate);
 

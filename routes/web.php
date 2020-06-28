@@ -16,9 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+
+
 Route::group(['middleware' => 'auth'],function(){
 
-
+    Route::get('All/books',"BookController@index")->name('books');
 
      Route::get('/book/{id}',"StudentController@book_reservation")->name('book_reservation');
 

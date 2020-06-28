@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
 {
-    
+
 
     protected $table = 'books';
     protected $fillable = [
@@ -29,14 +29,14 @@ class Book extends Model
 
 
   public function getUpdatedAtAttribute($value)
-  
+
     {
         return date('d-m-Y h:i:s', strtotime($value));
 
 
 
-     }   
-    
+     }
+
 
 
 
@@ -56,4 +56,10 @@ class Book extends Model
         return $this->hasMany(BookLikes::class,'book_id','id');
 
     }
+
+    public function getImagePathAttribute()
+    {
+        return asset('storage/books' . $this->image);
+
+    }//end of get image path
 }

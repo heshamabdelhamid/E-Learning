@@ -13,7 +13,7 @@ Config(['auth.defaults.guard' => 'web']);
 
 class WelcomeController extends Controller
 {
-    
+
      public function index(){
 
         $book = Book::orderBy('id','desc')->take(6)->get();
@@ -23,7 +23,7 @@ class WelcomeController extends Controller
      }
 
      /*---------------------------------------------------------------------*/
-       
+
        public function category($id){
 
        	    $category = Category::where('id',$id)->first();
@@ -42,12 +42,13 @@ class WelcomeController extends Controller
      /*---------------------------------------------------------------------*/
 
      public function book_reservation($id){
-           
+
         $book = Book::with('reservation')->findOrFail($id);
 
-     	   if($book->available == 'yes'){
 
-     	   return view('book_reservation',compact(['book']));
+     	   if($book->available && auth()->user()){
+
+     	       return view('book_reservation',compact(['book']));
 
          	}else{
 
@@ -65,17 +66,17 @@ class WelcomeController extends Controller
 
               if(!empty($book)){
 
-        	   if($book->available == 'yes'){
+        	   if($book->available && auth()->user()){
 
                $reservation = Reservation::create(['student_id' => auth()->user()->id,'book_id' => $id]);
-               $book->update(['available' => 'no']);
-        	     return response(["status" => 200,'content' => $reservation]);	   	   
+               $book->update(['available' => 0]);
+        	     return response(["status" => 200,'content' => $reservation]);
 
         	   }else{
-        	   return response(["status" => 304,'content' => 'not available']);	   	   
+        	   return response(["status" => 304,'content' => 'not available']);
         	  }
             }else{
-              return response(["status" => 304,'content' => 'not available']);	   	   
+              return response(["status" => 304,'content' => 'not available']);
             }
 
 	        }else{
@@ -85,20 +86,23 @@ class WelcomeController extends Controller
         }
      /*---------------------------------------------------------------------*/
 
-        public function search(){
-           $book = Book::when(request()->book,function($query){
-              return $query->where('title','like',"%".request()->book . "%")
-                           ->orWhere('description',"like","%" . request()->book . "%");
-          })->latest()->paginate(6);
-            return view('search_book',compact('book'));
+        public function search(Request $request){
+           $books = Book::when($request->search, function($q) use ($request) {
+
+                return $q->where('title', 'like', "%". $request->search . "%")
+                         ->orWhere('description', "like", "%" . $request->search . "%");
+
+          })->latest()->paginate(5);
+
+            return view('search_book',compact('books'));
         }
 
      /*---------------------------------------------------------------------*/
 
          public function ContactUs(){
-             
+
              $validate = request()->validate([
-                   
+
                     "name" => "required|string",
                     "email" => "required|email",
                     "message" => "required|string",
@@ -116,7 +120,7 @@ class WelcomeController extends Controller
 
              return back();
 
- 
+
          }
 
 

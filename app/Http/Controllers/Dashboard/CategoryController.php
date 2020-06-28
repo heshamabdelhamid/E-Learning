@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     public function index(CategoriesDataTable $dataTable)
     {
-    
+
         return $dataTable->render('dashboard.categories.index');
 
     }
@@ -51,10 +51,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
          $validate = $request->validate([
-              
+
               "name" => 'required|min:3|string|unique:categories',
-              "description" => 'sometimes|nullable|string',
-            
+              "description" => 'sometimes|nullable|string|min:5|max:255',
+
          ]);
 
         Category::create($validate);
@@ -66,17 +66,17 @@ class CategoryController extends Controller
 
 // -------------------------------------------------------------------------------
 
-
-
+// -------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------
 
 
     public function edit(Category $category)
     {
- 
+
 
       if($category->name != 'undefined‏'){
-         
+
         return  view('dashboard.categories.edit',compact('category'));
 
       }else{
@@ -97,10 +97,10 @@ class CategoryController extends Controller
       if($category->name != 'undefined‏'){
 
        $validate = $request->validate([
-              
+
               "name" => 'required|min:3|string|unique:categories,name,'.$category->id.'id',
-              "description" => 'sometimes|nullable|string',
-            
+              "description" => 'sometimes|nullable|string|max:255',
+
          ]);
 
         $category->update($validate);
@@ -121,7 +121,7 @@ class CategoryController extends Controller
     {
 
 
-  
+
         if($category->name != 'undefined‏'){
 
             $category->delete();
@@ -131,7 +131,7 @@ class CategoryController extends Controller
             return redirect(route('categories.index'));
 
           }else{
-          
+
             return redirect(route('categories.index'));
 
           }

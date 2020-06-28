@@ -26,12 +26,12 @@
 
         <article class="books-section">
             <div class="container">
- 
+
 
 @if(session()->has('success'))
 
  <div class="alert alert-success alert-dismissible fade show  text-center" role="alert">
-  <strong>تم الغا الحجز</strong> 
+  <strong>تم الغا الحجز</strong>
 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -44,9 +44,9 @@
 @if($reservation->count() > 0)
 
 
-    
+
  <div class="alert alert-warning alert-dismissible fade show text-center mb-5" role="alert">
-  <strong>يجب ان يكون استلام الكتاب في مده خلال 72 ساعه والا سيتم الغاء الحجز</strong> 
+  <strong>يجب ان يكون استلام الكتاب في مده خلال 72 ساعه والا سيتم الغاء الحجز</strong>
 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
@@ -61,37 +61,37 @@
                     <div class="col">
                         <div class="book-body">
                             <div class="book-img">
-                                <img src="{{asset('storage/'.$reservations->book->photo)}}" alt="books" />
+                                <img src="{{asset('books/'.$reservations->book->photo)}}" alt="books" />
                             </div>
                             <div class="book-info">
 
                                 <h3 class="book-name">{{$reservations->book->title}}</h3>
-                                
 
-                                 @if($reservations->status == 'pending') 
+
+                                 @if($reservations->status == 'pending')
                                      <div class="booking">
 
 
 			       <button type="button" class="btn btn-danger cancel"  data-id="{{$reservations->id}}"data-toggle="modal" data-target="#exampleModal">
-												  الغاء الحجز 
+												  الغاء الحجز
 									   </button>
                                      </div>
-                                   
+
                                    @elseif($reservations->status == 'retrieved')
                                        <button class="btn btn-success">
                                        	  تمت قرأته
                                        </button>
 
-                                    @else($reservations->status == 'active') 
+                                    @else($reservations->status == 'active')
                                      <button class="btn btn-success">
                                         لديك
-                                       </button>  
+                                       </button>
 
-    
-   
+
+
                                  @endif
-               
-         
+
+
                             </div>
                             <div class="book-details">
                                 <div class="stars">
@@ -102,11 +102,11 @@
                                     <i class="staricon-"></i>
                                 </div>
                                 <div class="booking">
-                    
+
                                  <i class=" {{!empty(checkLike($reservations->book->id)) ? 'fa fa-heart' :'heart-emptyicon-'}} love" id="addLike" data-id="{{$reservations->book->id}}">
-                       
+
                                  </i>
-                                
+
                                 </div>
 
                             </div>
@@ -118,17 +118,17 @@
          @endforeach
 
 
-            </div> 
+            </div>
             <div class="d-flex justify-content-center mt-3">
 
 
             </div>
          @else
-         <center class='text-center'><h4>عفوا لا يوجد كتب </h4></center>
-         
-         @endif     
-                        
-  
+         <center class='text-center'> <h4>عفوا لا يوجد كتب </h4></center>
+
+         @endif
+
+
             </div>
         </article>
 

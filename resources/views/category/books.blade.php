@@ -15,7 +15,7 @@
             <div class="container">
                 <div>
                     <h4 style="float:right;">{{$category->name == 'undefined‏' ? 'عام' : $category->name }}</h4>
-                    
+
                     <div style="clear: both;" class="mb-4"></div>
                 </div>
                 <div class="row">
@@ -27,7 +27,7 @@
                     <div class="col">
                         <div class="book-body">
                             <div class="book-img">
-                                <img src="{{asset('storage/'.$books->photo)}}" alt="books" />
+                                <img src="{{asset('books/'.$books->photo)}}" alt="books" />
                             </div>
                             <div class="book-info">
 
@@ -36,9 +36,10 @@
                                 </span>
 
                                 <h3 class="book-name">{{$books->title}}</h3>
-                                
 
-                                 @if($books->available == 'yes') 
+
+                                 @if($books->available)
+                                    @if(auth()->user() && auth()->user()->can_reservation)
                                      <div class="booking">
                                        <span class="status status-yas p-2">
                                            متاح
@@ -49,18 +50,24 @@
 
                                     </div>
 
+                                    @else
+                                          <span class="status status-no">
+                                            غير متاح
+                                          </span>
+                                    @endif
+
                                  @else
-                                  
+
 
                                           <span class="status status-no">
                                             غير متاح
-                                          </span>   
-   
+                                          </span>
+
                                  @endif
-               
-     
-         
-                                
+
+
+
+
                             </div>
                             <div class="book-details">
                                 <div class="stars">
@@ -72,8 +79,8 @@
                                 </div>
                                 <div class="booking">
                               @guest
-                                
-                              @else    
+
+                              @else
 
                           <i class=" {{!empty(checkLike($books->id)) ? 'fa fa-heart' :'heart-emptyicon-'}} love" id="addLike" data-id="{{$books->id}}"></i>
                                @endguest
@@ -83,10 +90,10 @@
                         </div>
                     </div>
 
-          @endforeach 
+          @endforeach
 
 
-            </div> 
+            </div>
             <div class="d-flex justify-content-center mt-3">
 
                 {{ $book->appends(request()->query())->links() }}
@@ -95,13 +102,12 @@
             </div>
          @else
          <center><h4>عفوا لا يوجد كتب حاليا في هذا القسم</h4></center>
-         
-         @endif     
-                        
-  
+
+         @endif
+
+
             </div>
         </article>
 
 @endsection
 
- 

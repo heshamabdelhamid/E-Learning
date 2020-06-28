@@ -14,12 +14,12 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->string('full_name')->unique();
             $table->string('student_id')->unique();
             $table->string('password');
             $table->enum('level',[1,2,3,4]);
-            $table->enum('can_reservation',['yes','no'])->default('yes');
+            $table->boolean('can_reservation')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

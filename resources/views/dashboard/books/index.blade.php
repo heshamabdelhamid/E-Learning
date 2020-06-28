@@ -18,10 +18,6 @@
 
 @endif
 
-
-
-
-
  {!! $dataTable->table(['class' => 'table table-hover table-bordered dataTable']) !!}
 
 
@@ -45,7 +41,7 @@
                 @method("delete")
 
                   <input type="submit" value="{{trans('dashb.delete')}}" class="btn btn-danger">
-         </form> 
+         </form>
 
 
       </div>
@@ -82,7 +78,7 @@
     if(getpermission != true){
       $(".buttons-create").addClass('d-none');
     }
-    
+
   });
 </script>
 

@@ -20,10 +20,17 @@
                                     ؟
                                 </h1>
                                 <p>لـقد قمنـا بانشــاء هـذا الموقـع لاثــراء مــحـتـوي الـقــراء وللاحتفاظ بالمراجع وتحويل وتقدم المحتوي باستخدام التكنولوجيا لمستقبل افضل ان شاء الله ونتمني لكم تجربة مفيدة وسعيدة ولذيذة واحلا مسا..</p>
-                                <button class="book-now">احجز الان</button>
-                             @guest   
+
+
+                                @if (Auth::guest())
+                                    <a href="{{route('welcome.login')}}" class="book-now">احجز الان</a>
+                                @else
+                                    <a href="{{route('books')}}" class="book-now">احجز الان</a>
+                                @endif
+
+                             @guest
                                 <button class="login"><a href="{{route('welcome.login')}}">تسجيل الدخول</a></button>
-                             @endguest   
+                             @endguest
                             </div>
                         </div>
                         <div class="col">
@@ -35,7 +42,7 @@
                 </div>
             </div>
 
-      @endsection      
+      @endsection
 
 
 @section('content')
@@ -96,59 +103,62 @@
             <div class="container">
                 <div class="row">
 
-         @foreach($book as $books)     
+         @foreach($book as $books)
 
                     <div class="col">
                         <div class="book-body">
                             <div class="book-img">
-                                <img src="{{asset('storage/'.$books->photo)}}" alt="books" />
+                                <img src="{{asset('books/'.$books->photo)}}" alt="books" />
                             </div>
                             <div class="book-info">
                                 <span class="category">
                                     {{$books->category->name == 'undefined‏' ? 'عام' : $books->category->name }}
                                 </span>
                                 <h3 class="book-name">{{$books->title}}</h3>
-                                
 
-                                 @if($books->available == 'yes') 
+
+                                 @if($books->available)
+                                   @if(auth()->user() && auth()->user()->can_reservation)
                                      <div class="booking">
                                        <span class="status status-yas">
                                            متاح
                                        </span>
-                                       <a href="{{route('book_reservation',$books->id)}}" class="status status-yas" style="margin-right: 5px;">
-                                           حجز
-                                       </a>
+
 
                                     </div>
-
-                                 @else
-                                  
-
-                                          <span class="status status-no">
+                                    @else
+                                         <span class="status status-no">
                                             غير متاح
-                                          </span>   
-   
-                                 @endif
-               
-     
-         
-                                
+                                          </span>
+                                    @endif
+
+                                    @else
+
+
+                                            <span class="status status-no">
+                                                غير متاح
+                                            </span>
+
+                                    @endif
+
+
+
+
                             </div>
                             <div class="book-details">
-                                <div class="stars">
-                                    <i class="staricon-"></i>
-                                    <i class="staricon-"></i>
-                                    <i class="staricon-"></i>
-                                    <i class="staricon-"></i>
-                                    <i class="staricon-"></i>
-                                </div>
+                                @if($books->available)
+                                   @if(auth()->user() && auth()->user()->can_reservation)
+                                        <a href="{{route('book_reservation',$books->id)}}" class="status status-yas" style="margin-right: 5px;float: right;">
+                                            حجز
+                                        </a>
+                                    @endif
+                                @endif
                                 <div class="booking">
-                                @guest
-                                
-                                @else    
-                                 <i class="heart-emptyicon- love" id="addLike" data-id="{{$books->id}}">
-                                 </i>
-                               @endguest
+                                    @guest
+
+                                    @else
+                                        <i class=" {{!empty(checkLike($books->id)) ? 'fa fa-heart' :'heart-emptyicon-'}} love" id="addLike" data-id="{{$books->id}}"></i>
+                                    @endguest
                                 </div>
 
                             </div>
@@ -161,7 +171,7 @@
 
 
 
- 
+
 
                 </div>
             </div>

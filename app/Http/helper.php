@@ -31,7 +31,7 @@
 
 function url_dash($url){
 
-    return url('eldashboard/'.$url);
+    return url('admin/'.$url);
 }
 
 
@@ -69,7 +69,7 @@ function admin(){
 
 function categories(){
 
-            return \App\Category::all();
+            return \App\Category::where("id","!=",1)->get();
 
 }
 

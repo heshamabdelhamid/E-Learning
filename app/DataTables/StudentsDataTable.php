@@ -21,7 +21,6 @@ class StudentsDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('can', 'dashboard.students.button.can_reservation')
             ->addColumn('edit', 'dashboard.students.button.edit')
             ->addColumn('delete', 'dashboard.students.button.delete');
          
@@ -81,9 +80,8 @@ class StudentsDataTable extends DataTable
             Column::make('full_name')->title(trans('dashb.name')),
             Column::make('student_id')->title(trans('dashb.student_id')),
             Column::make('level')->title(trans('dashb.level')),
-            Column::computed('can')
-                  ->title(trans('dashb.can_reservation'))
-                  ->width(120),
+            Column::make('can_reservation')->title(trans('dashb.can_reservation')),
+       
             Column::computed('edit')
                   ->title(trans('dashb.tb_edit'))
                   ->exportable(false)

@@ -7,6 +7,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DataTables\BooksDataTable;
+use Illuminate\Support\Facades\Storage;
 
 class BooksController extends Controller
 {
@@ -28,7 +29,7 @@ class BooksController extends Controller
     public function index(BooksDataTable $dataTable)
     {
 
-    
+
         return $dataTable->render('dashboard.books.index');
 
     }
@@ -38,8 +39,8 @@ class BooksController extends Controller
 
     public function create()
     {
-        $categories = Category::pluck('name','id'); 
-       
+        $categories = Category::pluck('name','id');
+
         return view('dashboard.books.create',compact('categories'));
     }
 
@@ -50,32 +51,32 @@ class BooksController extends Controller
     {
 
 
-      
+
          $validate = $request->validate([
-              
+
               "title" => 'required|string|unique:books',
               "category_id" => 'sometimes|nullable|numeric',
               "photo" => checkImage(),
-              "description" => 'required|min:30|string',
-              "available" => 'sometimes|nullable|in:yes,no',
-            
+              "description" => 'required|min:5|max:255|string',
+              "available" => 'sometimes|nullable|in:1,0',
+
          ]);
 
          if($request->hasFile('photo')){
-             
-             $replace = str_replace('public/', '', uploade()->uploadeImage(null,$request->file('photo'),'books'));
 
+            $file_name = $request->photo->hashName();
+            $request->photo->move(public_path('books'),$file_name);
+            $validate['photo'] = $file_name;
 
-            $validate['photo'] = $replace;
          }
 
-  
+
      if(request()->category_id == null){
 
         $validate['category_id'] = 1;
      }
 
-  
+
 
         Book::create($validate);
 
@@ -87,17 +88,16 @@ class BooksController extends Controller
 // -------------------------------------------------------------------------------
 
 
- 
+
 // -------------------------------------------------------------------------------
 
 
     public function edit(Book $book)
     {
 
-         $categories = Category::pluck('name','id'); 
+         $categories = Category::pluck('name','id');
 
-         
-        return  view('dashboard.books.edit',compact(['book','categories']));
+        return view('dashboard.books.edit',compact(['book','categories']));
 
     }
 
@@ -107,27 +107,25 @@ class BooksController extends Controller
     public function update(Request $request, Book $book)
     {
 
-
        $validate = $request->validate([
-              
+
               "title" => 'required|string|unique:books,title,'.$book->id.'id',
               "category_id" => 'sometimes|nullable|numeric',
               "photo" => checkImage(),
-              "description" => 'required|min:30|string',
-              "available" => 'sometimes|nullable|in:yes,no',
+              "description" => 'required|min:10|max:255|string',
+              "available" => 'sometimes|nullable|in:1,0',
 
-            
+
          ]);
 
 
         if($request->hasFile('photo')){
 
             $prev_im = !empty($book->photo) && $book->photo != 'books/default.jpg' ? $book->photo : null;
-             
-             $replace = str_replace('public/', '', uploade()->uploadeImage('public/'.$prev_im,$request->file('photo'),'books'));
 
-
-            $validate['photo'] = $replace;
+            $file_name = $request->photo->hashName();
+            $request->photo->move(public_path('books'),$file_name);
+            $validate['photo'] = $file_name;
          }
 
         $book->update($validate);
@@ -145,7 +143,7 @@ class BooksController extends Controller
 
      if(!empty($book->photo) && $book->photo != 'books/default.jpg'){
 
-        \Storage::delete('public/'.$book->photo); 
+        Storage::delete('public/'.$book->photo);
      }
 
 

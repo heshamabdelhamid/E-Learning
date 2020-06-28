@@ -38,10 +38,7 @@ class StudentsController extends Controller
 
 	public function create(){
 
-
        return view('dashboard.students.create');
-
-
 	}
 
 

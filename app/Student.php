@@ -17,12 +17,8 @@ class Student extends Authenticatable
 
      */
     protected $tabel = 'Students';
-    protected $fillable = [
-        'full_name',
-        'student_id',
-        'password',
-        'level',
-        'can_reservation',
+    protected $fillable = ['full_name','student_id','password','level','can_reservation',
+
     ];
 
     /**
@@ -34,20 +30,20 @@ class Student extends Authenticatable
         'password', 'remember_token',
     ];
 
- 
+
      public function getCreatedAtAttribute($value)
     {
         return date('d-m-Y h:m:s', strtotime($value));
     }
 
- 
+
 
   public function getUpdatedAtAttribute($value)
-  
+
     {
         return date('d-m-Y h:m:s', strtotime($value));
     }
-    
+
 
 
 
